@@ -1,0 +1,25 @@
+Dispõe sobre a designação de membros da Comissão de Ética da USP.
+
+O Reitor da Universidade de São Paulo, usando de suas atribuições legais, nos termos do art. 40, § 1º, da Resolução nº 4871/2001, que baixou o Código de Ética da Universidade de São Paulo; tendo em vista que o Conselho Universitário, em sessão de 20 de fevereiro de 2024, elegeu membros da Comissão de Ética da USP; baixa a seguinte
+
+RESOLUÇÃO:
+
+Artigo 1º – Ficam designados, em recondução, como membros docentes da Comissão de Ética da USP, com mandato de 02 (dois) anos:
+
+– Profa. Dra. Ana Elisa Liberatore Silva Bechara;
+– Prof. Dr. Dalton Luiz de Paula Ramos;
+– Profa. Dra. Fabiana Cristina Severi.
+
+Artigo 2º – Fica designado como membro representante dos servidores técnicos e administrativos da Comissão de Ética da USP, com mandato de 02 (dois) anos:
+
+– Sr. Reinaldo Santos de Souza, a partir de 13.03.2024.
+
+Artigo 3º – Esta Resolução entra em vigor na data de sua publicação (Proc. USP nº 19.1.4518.1.2).
+
+Reitoria da Universidade de São Paulo, 24 de fevereiro de 2024.
+
+CARLOS GILBERTO CARLOTTI JUNIOR
+Reitor
+
+MARINA GALLOTTINI
+Secretária Geral
