@@ -6,6 +6,6 @@ Development of a Retrieval-Augmented Generation model
 
 pip install -r requirements.txt
 
-# Run user interface(on venv)
+# Run user interface (on venv)
 
 streamlit run app.py
