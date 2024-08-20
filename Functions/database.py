@@ -6,7 +6,7 @@ from langchain.retrievers import ParentDocumentRetriever
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.embeddings import HuggingFaceEmbeddings
 
-# CHROMA DB -------------------------------------------------------------------------------------------------------------------------------
+# CHROMA DB (Not Used) --------------------------------------------------------------------------------------------------------------------
 
 def chroma_init():
     chroma_client = chromadb.PersistentClient()
@@ -52,6 +52,8 @@ def use_chroma(text_chunks, similarity_function, n_results, ids, query_text_list
 
 def faiss_embed_documents(embedding, text_chunks, model_name):
     faiss_db = FAISS.from_documents(text_chunks, embedding=embedding)
+
+    # Create Vector Store for "model_name"
     if model_name == "paraphrase-multilingual-MiniLM-L12-v2":
         faiss_db.save_local("Databases/vector_store_paraphrase-multilingual-MiniLM-L12-v2")
     elif model_name == "paraphrase-multilingual-mpnet-base-v2":
@@ -64,6 +66,8 @@ def faiss_embed_documents(embedding, text_chunks, model_name):
     return faiss_db
 
 def faiss_get_vector_store(embedding, model_name):
+
+    #  Get Vector Store for "model_name"
     if model_name == "paraphrase-multilingual-MiniLM-L12-v2":
         vector_store = FAISS.load_local("Databases/vector_store_paraphrase-multilingual-MiniLM-L12-v2", embedding, allow_dangerous_deserialization=True)
     elif model_name == "paraphrase-multilingual-mpnet-base-v2":
@@ -76,6 +80,8 @@ def faiss_get_vector_store(embedding, model_name):
     return vector_store
 
 def faiss_query(vector_store, query_text, n_results, similarity_function):
+
+    # Compute the Similarity Search given the "query_text" and return "n_results" (number of results) chunks
     results_faiss = vector_store.similarity_search_with_score(query_text, k = n_results, collection_metadata={"hnsw:space": similarity_function})
     documents_faiss = []
     distances_faiss = []
@@ -86,36 +92,3 @@ def faiss_query(vector_store, query_text, n_results, similarity_function):
     # print(distances_faiss)
 
     return documents_faiss
-
-# def use_faiss(text_chunks, similarity_function, n_results, query_text):
-#     embedding = HuggingFaceEmbeddings(model_name = "paraphrase-multilingual-MiniLM-L12-v2")
-#     vector_store = faiss_embed_documents(embedding, text_chunks)
-#     results_faiss = faiss_query(vector_store, query_text, n_results, similarity_function)
-
-#     documents_faiss = []
-#     distances_faiss = []
-
-#     for documents in results_faiss:
-#         documents_faiss.append(documents[0])
-#         distances_faiss.append(documents[1])
-
-#     print(distances_faiss)
-
-#     return documents_faiss
-
-# Parent Document Retriever TESTING -------------------------------------------------------------------------------------------------------
-
-def parent_retriever(child_chunk_size, parent_chunk_size):
-    child_splitter = RecursiveCharacterTextSplitter(chunk_size=child_chunk_size, chunk_overlap=20)
-    parent_splitter = RecursiveCharacterTextSplitter(chunk_size=parent_chunk_size, chunk_overlap=20)
-    return child_splitter, parent_splitter
-
-def create_retriever(vectorstore, child_splitter, parent_splitter):
-    store = InMemoryStore()
-    retriever = ParentDocumentRetriever(
-        vectorstore=vectorstore,
-        docstore=store,
-        child_splitter=child_splitter,
-        parent_splitter=parent_splitter
-    )
-    return retriever

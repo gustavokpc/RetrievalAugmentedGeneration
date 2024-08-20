@@ -1,3 +1,8 @@
+
+
+# Paper Evaluation Methods
+
+
 import pandas as pd
 from database import faiss_query, faiss_embed_documents, faiss_get_vector_store
 import random
@@ -16,6 +21,7 @@ import os
 import google.generativeai as genai
 import time
 
+# Evaluation of different chunk_sizes, chunk_overlaps, embedding models (and BM25, random) for (k in {1:100})
 def evaluateAll(n_results, similarity_function):
     chunk_size_list = [2000, 4000, 8000]
     chunk_overlap_list = [200, 400, 800]
@@ -106,6 +112,7 @@ def evaluateAll(n_results, similarity_function):
             writer = csv.writer(f)
             writer.writerows(zip(k, acc_random))
 
+# Evaluation of different chunk_sizes and chunk_overlaps for a specified embedding model and number of results
 def eval_chunk_size(model_name, n_results, similarity_function):
     chunk_size_list = [2000, 4000, 8000]
     chunk_overlap_list = [200, 400, 800]
@@ -124,6 +131,7 @@ def eval_chunk_size(model_name, n_results, similarity_function):
     print("\nAccuracy: ", accs)
     generate_plot_chunk_size(accs, n_results, chunk_size_list)
 
+# Evaluation of different embedding models for a specified chunk size, chunk overlap and number of results
 def eval_embeddings(n_results, similarity_function):
 
     chunk_size = 1000
@@ -182,6 +190,7 @@ def eval_embeddings(n_results, similarity_function):
     # Plots -----------------------------------------------------------------------------------------------------------
     generate_plot_embeddings(accs_paraphrase_multilingual_MiniLM_L12_v2, accs_paraphrase_multilingual_mpnet_base_v2, accs_distiluse_base_multilingual_cased_v1, accs_distiluse_base_multilingual_cased_v2, accs_BM25, accs_random, n_results)
 
+# Generate chunks_ids
 def get_chunk_position(result, correct_id):
     ids_result = []
     for element in result:
@@ -192,6 +201,7 @@ def get_chunk_position(result, correct_id):
     else:
         return 0
 
+# Evaluate BM25
 def evaluationBM25(retriever, n_results, chunk_size):
     filename = "Data/csv_docs/questions_" + str(chunk_size) + ".csv"
     filename2 = "Data/csv_docs/paraphrases_" + str(chunk_size) + ".csv"
@@ -212,6 +222,7 @@ def evaluationBM25(retriever, n_results, chunk_size):
     accs = [x / len(data_dict) for x in freq]
     return accs
         
+# Check if returned chunk is the correct one (Not Used)
 def evaluationVectorStores(vector_store, n_results, similarity_function):
     data = pd.read_csv("Data/csv_docs/questions.csv")
     data_dict = data.to_dict(orient="index")
@@ -229,6 +240,7 @@ def evaluationVectorStores(vector_store, n_results, similarity_function):
     accs = [x / len(data_dict) for x in freq]
     return accs
 
+# Check if returned chunk is the correct one for a specified chunk size
 def evaluationVectorStores_chunk_size(vector_store, n_results, similarity_function, chunk_size):
     filename = "Data/csv_docs/questions_" + str(chunk_size) + ".csv"
     filename2 = "Data/csv_docs/paraphrases_" + str(chunk_size) + ".csv"
@@ -249,6 +261,7 @@ def evaluationVectorStores_chunk_size(vector_store, n_results, similarity_functi
     accs = [x / len(data_dict) for x in freq]
     return accs
 
+# Evaluate Random
 def evaluationRandom(n_results, text_chunks, chunk_size):
     random.seed(5)
     filename = "Data/csv_docs/questions_" + str(chunk_size) + ".csv"
@@ -275,6 +288,7 @@ def evaluationRandom(n_results, text_chunks, chunk_size):
     accs = [x / len(data_dict) for x in freq]
     return accs
 
+# Generate plot - Accuracy for embedding models (Not Used)
 def generate_plot_embeddings(accs_MiniLM, accs_mpnet, accs_cased_v1, accs_cased_v2, accs_BM25, accs_random, n_results):
     x_list = []
     for i in range(n_results):
@@ -292,6 +306,7 @@ def generate_plot_embeddings(accs_MiniLM, accs_mpnet, accs_cased_v1, accs_cased_
     plt.grid(alpha=0.3)
     plt.show()
 
+# Generate plot - Accuracy for different chunk sizes (Not Used)
 def generate_plot_chunk_size(accs, n_results, chunk_size_list):
     x_list = []
     for i in range(n_results):
@@ -306,6 +321,7 @@ def generate_plot_chunk_size(accs, n_results, chunk_size_list):
     plt.grid(alpha=0.3)
     plt.show()
 
+# Get number of words for different chunk sizes
 def getNumWords():
     chunk_size_list = [2000, 4000, 8000]
     chunk_overlap_list = [200, 400, 800]
@@ -325,6 +341,7 @@ def getNumWords():
         print("Min of size " + str(chunk_size_list[i]) + " is " + str(min))
         print("Avg of size " + str(chunk_size_list[i]) + " is " + str(avg/len(text_chunks)))   
 
+# Create file 
 def getCorrectChunks(vector_store, chunk_size, chunk_overlap, n_results, similarity_function):
     filename = "Data/csv_docs/paraphrases_" + str(chunk_size) + ".csv"
     data = pd.read_csv(filename)
@@ -349,7 +366,7 @@ def getCorrectChunks(vector_store, chunk_size, chunk_overlap, n_results, similar
         writer = csv.writer(f)
         writer.writerows(zip(corretos_list, perguntas_list))
 
-
+# Evaluate differente generative models
 def evaluateModels(vector_store, chunk_size, chunk_overlap, n_results, similarity_function):
     filename = "Data/csv_docs/paraphrases_" + str(chunk_size) + ".csv"
     data = pd.read_csv(filename)

@@ -1,11 +1,11 @@
 # RetrievalAugmentedGeneration
 
-Development of a Retrieval-Augmented Generation model   
+Development of a RAG-based (Retrieval-Augmented Generation) Institutional Assistant for the University os São Paulo
 
 # Installation
 
 pip install -r requirements.txt
 
-# Run (on venv)
+# Run UI - on venv
 
 streamlit run app.py

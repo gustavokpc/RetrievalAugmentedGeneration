@@ -1,5 +1,6 @@
 from langchain.prompts import ChatPromptTemplate
 
+# Initial and simplest prompt
 PROMPT_TEMPLATE = """
 Responda à pergunta com base apenas no seguinte contexto:
 
@@ -12,7 +13,7 @@ Responda à pergunta com base apenas no seguinte contexto:
 Pergunta: {question}
 """
 
-
+# Prompt with history passage, used for better interaction with User Interface
 PROMPT_TEMPLATE_HISTORICO = """
 Você é um respondedor de perguntas e está interagindo com um usário, você deve responder somente à "Pergunta Usuário" com base no contexto fornecido e no histórico de conversas, considere a última pergunta e resposta do histórico como a mais relevante:
 
@@ -35,6 +36,7 @@ Contexto:
 Pergunta Usuário: {question}
 """
 
+# Prompt used for evaluation after query.
 PROMPT_TEMPLATE_EVALUATION = """
 Estamos criando um assistente virtual capaz de responder perguntas sobre aspectos institucionais e normativos da Universidade de São Paulo, a USP. Esse sistema deverá ajudar alunos, professores e funcionários a entender melhor a estrutura e o funcionamento da universidade. 
 Para que você esteja mais bem contextualizado, a USP foi fundada oficialmente em 25 de janeiro de 1934. A USP é a maior e mais importante instituição de ensino superior do Brasil. Ela oferece 246 cursos de graduação, 229 de pós-graduação e conta com 5,8 mil professores e 93 mil alunos entre graduação e pós-graduação, cobrindo todas as áreas do conhecimento. A universidade é composta por 42 unidades de ensino e pesquisa, distribuída em dez campi. O campus principa é conhecido como Cidade Universitária, e abrange quase 3,7 milhões de metros quadrados. 
@@ -44,22 +46,29 @@ Pergunta: {question}. Contexto: {context}…
 Resposta:
 """
 
+# Generate prompt for each template
 def generate_prompt(documents_str, query_texts):
     prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
     prompt = prompt_template.format(context=documents_str, question=query_texts)
     return prompt
 
+def generate_prompt_historico(documents_str, historico, query_texts):
+    prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE_HISTORICO)
+    prompt = prompt_template.format(context=documents_str, historico=historico, question=query_texts)
+    return prompt
+
+def generate_prompt_evaluation(documents_str, query_texts):
+    prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE_EVALUATION)
+    prompt = prompt_template.format(context=documents_str, question=query_texts)
+    return prompt
+
+# Generate the response text for different generative models and prompts
 def generate_response(model, documents_str, query_text):
     prompt = generate_prompt(documents_str, query_text)
     print(prompt)
 
     response_text = model.invoke(prompt)
     return response_text
-
-def generate_prompt_evaluation(documents_str, query_texts):
-    prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE_EVALUATION)
-    prompt = prompt_template.format(context=documents_str, question=query_texts)
-    return prompt
 
 def generate_response_evaluation(model, documents_str, query_text):
     prompt = generate_prompt_evaluation(documents_str, query_text)
@@ -93,12 +102,6 @@ def generate_response_claude(documents_str, query_text, model_name, max_tokens, 
     )
     response_text = message.content[0].text
     return response_text
-
-
-def generate_prompt_historico(documents_str, historico, query_texts):
-    prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE_HISTORICO)
-    prompt = prompt_template.format(context=documents_str, historico=historico, question=query_texts)
-    return prompt
 
 def generate_response_historico(model, documents_str, historico, query_text):
     prompt = generate_prompt_historico(documents_str, historico, query_text)

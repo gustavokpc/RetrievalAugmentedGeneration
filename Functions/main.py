@@ -50,7 +50,7 @@ model_name = "paraphrase-multilingual-mpnet-base-v2" # paraphrase-multilingual-M
 embedding = HuggingFaceEmbeddings(model_name = model_name)
 # retriever = BM25Retriever.from_documents(text_chunks, k = n_results)
 
-# Using ChromaDB --------------------------------------------------------------------------------------------------------------------------
+# ChromaDB (Not Used) ---------------------------------------------------------------------------------------------------------------------
 # context_chroma = use_chroma(text_chunks=text_chunks, similarity_function=similarity_function, n_results=n_results, ids=ids, query_text_list=query_text_list)
 # results_array = np.array(context_chroma)
 # documents_str = map(str, results_array[0])
@@ -80,16 +80,17 @@ ks = [3, 5, 8]
 for k in ks:
     evaluateModels(vector_store, chunk_size, chunk_overlap, k, similarity_function)
 
-# Getting number of words for different chunk_sizes ---------------------------
+#       Getting number of words for different chunk_sizes ---------------------------
 
 # getNumWords()
 
-# Getting csv for correct chunks after query ----------------------------------
+#       Getting csv for correct chunks after query ----------------------------------
 
 # ks = [3, 5, 8]
 # for k in ks:
 #     getCorrectChunks(vector_store, chunk_size, chunk_overlap, k, similarity_function)
 
+# Generate response text ------------------------------------------------------------------------------------------------------------------
 # documents_str = ""
 # for element in result:
 #     documents_str += "Documento: " + ((element.metadata['source']).replace("Data\\md_docs\\", "")).replace(".md", "") + "\n"
