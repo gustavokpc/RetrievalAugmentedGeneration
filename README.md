@@ -6,6 +6,10 @@ Development of a RAG-based (Retrieval-Augmented Generation) Institutional Assist
 
 pip install -r requirements.txt
 
+<<<<<<< HEAD
 # Run UI - on venv
+=======
+# Run user interface (on venv)
+>>>>>>> origin
 
 streamlit run app.py
